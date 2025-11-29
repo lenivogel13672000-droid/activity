@@ -1,0 +1,33 @@
+name: Natural Green Bot
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '30 8,12,17,23 * * *'
+
+jobs:
+  natural-job:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Random Commit
+        run: |
+          git config --global user.email "bot@github.com"
+          git config --global user.name "Auto Bot"
+          
+          # انتخاب عدد شانسی بین ۱ تا ۱۵
+          RANDOM_COUNT=$(( ( RANDOM % 15 ) + 1 ))
+          
+          echo "Emrooz gharare $RANDOM_COUNT bar commit konam!"
+          
+          for (( i=1; i<=$RANDOM_COUNT; i++ ))
+          do
+            echo "Activity log: $(date)" >> log.txt
+            git add log.txt
+            git commit -m "Work update: $(date)"
+          done
+          
+          git push
